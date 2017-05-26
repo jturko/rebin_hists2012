@@ -122,8 +122,105 @@ TH1F ** rebin()
         hists0[i]->Write(Form("ScionixCal%d",i));
     }    
 
+    std::string treeFiles1[] = 
+    {
+        "4.35MeV_110_2",
+        "4.35MeV_100_2",
+        "4.35MeV_90_2",
+        "2.0MeV_90",
+        "2.0MeV_80",
+        "2.0MeV_70",
+        "2.0MeV_60",
+        "2.0MeV_50",
+        "2.0MeV_40",
+        "2.0MeV_30",
+        "2.0MeV_20",
+        "2.0MeV_10",
+        "2.0MeV_100",
+        "2.0MeV_110",
+        "2.0MeV_120",
+        "2.0MeV_130",
+        "2.0MeV_145_2",
+        "0.7MeV_10",
+        "0.7MeV_20",
+        "0.7MeV_30",
+        "0.7MeV_45",
+        "0.7MeV_60",
+        "0.7MeV_75",
+        "0.7MeV_90_2",
+        "0.7MeV_105_2",
+        "0.7MeV_115",
+        "0.7MeV_130_3",
+        "0.7MeV_145_2"
+    };
+
+    double tofCutLow1[] = 
+    {
+        7435    ,7855    ,8320    ,4800    ,5770    ,6633    ,7225    ,7733    ,8100    ,8370    ,
+        8590    ,8700    ,4330    ,3560    ,2760    ,1940    ,4825    ,8525    ,8230    ,7750    ,
+        6610    ,4820    ,2450    ,6060    ,6100    ,6650    ,7000    ,6660    
+    };
+    double tofCutHigh1[] = 
+    {
+        7700    ,8150    ,8575    ,5475    ,6450    ,6945    ,7490    ,7960    ,8315    ,8550    ,
+        8760    ,8860    ,4775    ,3990    ,3175    ,2400    ,5225    ,8880    ,8640    ,8260    ,
+        7280    ,5730    ,3620    ,7600    ,8030    ,8570    ,9150    ,8700    
+    };
+ 
+    double phCutLow1[] = 
+    {
+        10  ,10  ,10  ,10  ,10  ,10  ,10  ,10  ,10  ,10  ,
+        10  ,10  ,10  ,10  ,10  ,10  ,10  ,10  ,10  ,10  ,
+        10  ,10  ,10  ,10  ,10  ,10  ,9   ,9   
+    };
+    double phCutHigh1[] =
+    {
+        320 ,400 ,480 ,160 ,180 ,220 ,260 ,310 ,360 ,410 ,
+        440 ,480 ,110 ,100 ,90  ,80  ,70  ,130 ,120 ,110 ,
+        90  ,70  ,55  ,44  ,34  ,32  ,26  ,26  
+    };
+
+   
+    TH1F ** hists1 = (TH1F**)malloc(nFiles[1]*sizeof(TH1F*));
+    
+    slp = calArrayD[1]->GetParameter(0);
+    offset = -1*slp*calArrayD[1]->GetParameter(1);        
+
+    std::cout << " slp1 = " << slp << " offset1 = " << offset << std::endl;    
+
+    for(int i=0; i<nFiles[1]; i++) {
+        path = "~/data/testcan_neutron_raw/" + treeFiles1[i] + ".root";
+        tmpFile = TFile::Open(path.c_str());
+        treeArray_cal1[i] = (TTree*)tmpFile->Get("tree")->Clone();
+        //tmpFile->Close();            
+
+        std::cout << "sorting " << path << std::endl;
+        nEntries = treeArray_cal1[i]->GetEntries();
+        treeArray_cal1[i]->SetBranchAddress("value",&val);
+        
+        //hists1[i] = new TH1F(Form("hists1_%d",i),Form("hists1_%d",i),20000,0,2000);
+        hists1[i] = new TH1F(Form("hists1_%d",i),Form("hists1_%d",i),100,phCutLow1[i]-10,phCutHigh1[i]*1.2);
+        
+        for(int j=0; j<nEntries; j++) {
+            treeArray_cal1[i]->GetEntry(j);
+            
+            //if(j<5) std::cout << "val[0] = " << val[0] << std::endl;
+            //if(j<5) std::cout << "value = " << value << std::endl;
+            
+            fillval = slp*double(val[0])+offset;
+            fillval = random.Gaus(fillval,hists1[i]->GetBinWidth(0)); 
+            
+            //if(val[4]>tofCutLow0[i]+40 && val[4]<tofCutHigh0[i] && val[0]>10 && fillval<phCutHigh0[i]*1.19) hists0[i]->Fill(fillval);
+            if(val[4]>tofCutLow1[i] && val[4]<tofCutHigh1[i] && val[0]>10 && fillval<phCutHigh1[i]*1.19) hists1[i]->Fill(fillval);
+        }   
+        for(int k=0; k<hists1[i]->FindBin(1); k++) hists1[i]->SetBinContent(k,0);
+        outfile->cd();
+        hists1[i]->Write(Form("ScionixCal%d",i+nFiles[0]));
+    }    
+
+
     //return treeArray_cal0;
     //return calArrayD;    
-    return hists0;
+    return hists1;
 
 }
