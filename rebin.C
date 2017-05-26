@@ -122,6 +122,9 @@ TH1F ** rebin()
         hists0[i]->Write(Form("ScionixCal%d",i));
     }    
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     std::string treeFiles1[] = 
     {
         "4.35MeV_110_2",
@@ -217,10 +220,52 @@ TH1F ** rebin()
         outfile->cd();
         hists1[i]->Write(Form("ScionixCal%d",i+nFiles[0]));
     }    
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    std::string treeFiles2 = "0.7MeV_145_3";
+    double tofCutLow2 = 6020;
+    double tofCutHigh2 = 9140;
+    double phCutLow2 = 3;
+    double phCutHigh2 = 22;
 
+    TH1F ** hists2 = (TH1F**)malloc(nFiles[2]*sizeof(TH1F*));
+    
+    slp = calArrayD[2]->GetParameter(0);
+    offset = -1*slp*calArrayD[2]->GetParameter(1);        
+
+    std::cout << " slp2 = " << slp << " offset2 = " << offset << std::endl;    
+
+    path = "~/data/testcan_neutron_raw/" + treeFiles2 + ".root";
+    tmpFile = TFile::Open(path.c_str());
+    treeArray_cal2[0] = (TTree*)tmpFile->Get("tree")->Clone();
+    //tmpFile->Close();            
+
+    std::cout << "sorting " << path << std::endl;
+    nEntries = treeArray_cal2[0]->GetEntries();
+    treeArray_cal2[0]->SetBranchAddress("value",&val);
+    
+    hists2[0] = new TH1F(Form("hists2_%d",0),Form("hists2_%d",0),100,phCutLow2-10,phCutHigh2*1.2);
+    
+    for(int j=0; j<nEntries; j++) {
+        treeArray_cal2[0]->GetEntry(j);
+        
+        //if(j<5) std::cout << "val[0] = " << val[0] << std::endl;
+        //if(j<5) std::cout << "value = " << value << std::endl;
+        
+        fillval = slp*double(val[0])+offset;
+        fillval = random.Gaus(fillval,hists2[0]->GetBinWidth(0)); 
+        
+        //if(val[4]>tofCutLow0[i]+40 && val[4]<tofCutHigh0[i] && val[0]>10 && fillval<phCutHigh0[i]*1.19) hists0[i]->Fill(fillval);
+        if(val[4]>tofCutLow2 && val[4]<tofCutHigh2 && val[0]>0 && fillval > phCutLow2 && fillval<phCutHigh2*1.19) hists2[0]->Fill(fillval);
+    }   
+    for(int k=0; k<hists2[0]->FindBin(1); k++) hists2[0]->SetBinContent(k,0);
+    outfile->cd();
+    hists2[0]->Write(Form("ScionixCal%d",nFiles[0]+nFiles[1]));
 
     //return treeArray_cal0;
     //return calArrayD;    
-    return hists1;
+    return hists2;
 
 }
