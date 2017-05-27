@@ -97,7 +97,7 @@ TH1F ** rebin()
         treeArray_cal0[i] = (TTree*)tmpFile->Get("tree")->Clone();
         //tmpFile->Close();            
 
-        std::cout << "sorting " << path << std::endl;
+        std::cout << "sorting " << path << "\t";
         nEntries = treeArray_cal0[i]->GetEntries();
         treeArray_cal0[i]->SetBranchAddress("value",&val);
         
@@ -120,6 +120,7 @@ TH1F ** rebin()
         for(int k=0; k<hists0[i]->FindBin(1); k++) hists0[i]->SetBinContent(k,0);
         outfile->cd();
         hists0[i]->Write(Form("ScionixCal%d",i));
+        std::cout << " \t written to ScionixCal" << i << std::endl;
     }    
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -197,7 +198,7 @@ TH1F ** rebin()
         treeArray_cal1[i] = (TTree*)tmpFile->Get("tree")->Clone();
         //tmpFile->Close();            
 
-        std::cout << "sorting " << path << std::endl;
+        std::cout << "sorting " << path << "\t";
         nEntries = treeArray_cal1[i]->GetEntries();
         treeArray_cal1[i]->SetBranchAddress("value",&val);
         
@@ -219,6 +220,7 @@ TH1F ** rebin()
         for(int k=0; k<hists1[i]->FindBin(1); k++) hists1[i]->SetBinContent(k,0);
         outfile->cd();
         hists1[i]->Write(Form("ScionixCal%d",i+nFiles[0]));
+        std::cout << " \t written to ScionixCal" << i+nFiles[0] << std::endl;
     }    
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -242,7 +244,7 @@ TH1F ** rebin()
     treeArray_cal2[0] = (TTree*)tmpFile->Get("tree")->Clone();
     //tmpFile->Close();            
 
-    std::cout << "sorting " << path << std::endl;
+    std::cout << "sorting " << path << "\t";
     nEntries = treeArray_cal2[0]->GetEntries();
     treeArray_cal2[0]->SetBranchAddress("value",&val);
     
@@ -263,6 +265,7 @@ TH1F ** rebin()
     for(int k=0; k<hists2[0]->FindBin(1); k++) hists2[0]->SetBinContent(k,0);
     outfile->cd();
     hists2[0]->Write(Form("ScionixCal%d",nFiles[0]+nFiles[1]));
+    std::cout << " \t written to ScionixCal" << nFiles[0]+nFiles[1] << std::endl;
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -315,7 +318,7 @@ TH1F ** rebin()
         treeArray_cal3[i] = (TTree*)tmpFile->Get("tree")->Clone();
         //tmpFile->Close();            
 
-        std::cout << "sorting " << path << std::endl;
+        std::cout << "sorting " << path << "\t";
         nEntries = treeArray_cal3[i]->GetEntries();
         treeArray_cal3[i]->SetBranchAddress("value",&val);
         
@@ -337,6 +340,7 @@ TH1F ** rebin()
         for(int k=0; k<hists3[i]->FindBin(1); k++) hists3[i]->SetBinContent(k,0);
         outfile->cd();
         hists3[i]->Write(Form("ScionixCal%d",i+nFiles[0]+nFiles[1]+nFiles[2]));
+        std::cout << " \t written to ScionixCal" << i+nFiles[0]+nFiles[1]+nFiles[2] << std::endl;
     }    
 
     //return treeArray_cal0;
