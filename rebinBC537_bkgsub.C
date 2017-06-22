@@ -1,5 +1,5 @@
 
-TH1F ** rebin()
+TH1F ** rebinBC537_bkgsub()
 {
     
     //TTree ** treeArray = (TTree**)malloc(nfiles*sizeof(TTree*));
@@ -77,14 +77,30 @@ TH1F ** rebin()
         500 ,620 ,750 ,880 ,1000,1100,1200,1300,430 ,360 ,300 
     };    
 
+    double bkgCutLow0[] =
+    {
+        6000    ,7000    ,8000    ,8000    ,2000    ,2000    ,2000    ,2000    ,2000    ,1000    ,
+        1000    ,1000    ,1000    ,1000    ,1000    ,1000    ,1000    ,1000    ,1000    ,1000    ,
+        1000    ,1000    ,1000        
+    };
+    double bkgCutHigh0[] =
+    {
+        10000   ,12000   ,12000   ,12000   ,7000    ,7000    ,7000    ,7000    ,7000    ,7000    ,
+        6000    ,6000    ,8000    ,8000    ,8000    ,8000    ,8000    ,8000    ,8000    ,9000    ,
+        7000    ,6000    ,6000    
+    };
+
+ 
     TH1F ** hists0 = (TH1F**)malloc(nFiles[0]*sizeof(TH1F*));
+    TH1F ** hists0bkg = (TH1F**)malloc(nFiles[0]*sizeof(TH1F*));
+    TH1F ** hists0bkgsub = (TH1F**)malloc(nFiles[0]*sizeof(TH1F*));
     int nEntries;
     int val[6];
     double slp, offset;
     double fillval;
 
     TRandom3 random;    
-    TFile * outfile = TFile::Open("outfile.root","RECREATE");
+    TFile * outfile = TFile::Open("BC537_bkgsub.root","RECREATE");
     
     slp = calArrayD[0]->GetParameter(0);
     offset = -1*slp*calArrayD[0]->GetParameter(1);        
@@ -104,6 +120,8 @@ TH1F ** rebin()
         //hists0[i] = new TH1F(Form("hists0_%d",i),Form("hists0_%d",i),10000,0,10000);
         //hists0[i] = new TH1F(Form("hists0_%d",i),Form("hists0_%d",i),50100,-10,5000);
         hists0[i] = new TH1F(Form("hists0_%d",i),Form("hists0_%d",i),100,phCutLow0[i]-10,phCutHigh0[i]*1.2);
+        hists0bkg[i] = new TH1F(Form("hists0bkg_%d",i),Form("hists0bkg_%d",i),100,phCutLow0[i]-10,phCutHigh0[i]*1.2);
+        //hists0bkgsub[i] = new TH1F(Form("hists0bkgsub_%d",i),Form("hists0bkgsub_%d",i),100,phCutLow0[i]-10,phCutHigh0[i]*1.2);
         
         for(int j=0; j<nEntries; j++) {
             treeArray_cal0[i]->GetEntry(j);
@@ -116,11 +134,20 @@ TH1F ** rebin()
             
             //if(val[4]>tofCutLow0[i] && val[4]<tofCutHigh0[i] && val[0]>10) hists0[i]->Fill(fillval);
             if(val[4]>tofCutLow0[i]+40 && val[4]<tofCutHigh0[i] && val[0]>10 && fillval<phCutHigh0[i]*1.19) hists0[i]->Fill(fillval);
+            if(val[4]>bkgCutLow0[i] && val[4]<bkgCutHigh0[i] && fillval<phCutHigh0[i]*1.19) hists0bkg[i]->Fill(fillval);
         }   
         for(int k=0; k<hists0[i]->FindBin(1); k++) hists0[i]->SetBinContent(k,0);
+        
+        double scale = (tofCutHigh0[i]-tofCutLow0[i])/(bkgCutHigh0[i]-bkgCutLow0[i]);
+        hists0bkg[i]->Scale(scale);
+        hists0bkgsub[i] = (TH1F*)hists0[i]->Clone();
+        hists0bkgsub[i]->Add(hists0bkg[i],-1);
+        
         outfile->cd();
-        hists0[i]->Write(Form("ScionixCal%d",i));
-        std::cout << " \t written to ScionixCal" << i << std::endl;
+        hists0bkgsub[i]->Write(Form("ScionixCal%d",i));
+        hists0[i]->Write(Form("ScionixCal_wbkg%d",i));
+        hists0bkg[i]->Write(Form("BkgCal%d",i));
+        std::cout << " \t written to ScionixCal" << i << " and BkgCal" << i << std::endl;
     }    
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
