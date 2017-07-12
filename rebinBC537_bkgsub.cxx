@@ -145,9 +145,10 @@ int main()
         for(int k=0; k<hists0[i]->FindBin(1); k++) hists0[i]->SetBinContent(k,0);
         
         double scale = (tofCutHigh0[i]-tofCutLow0[i])/(bkgCutHigh0[i]-bkgCutLow0[i]);
-        hists0bkg[i]->Scale(scale);
+        //hists0bkg[i]->Scale(scale);
+        hists0bkg[i]->Sumw2(); hists0[i]->Sumw2();
         hists0bkgsub[i] = (TH1F*)hists0[i]->Clone();
-        hists0bkgsub[i]->Add(hists0bkg[i],-1);
+        hists0bkgsub[i]->Add(hists0bkg[i],-1.0*scale);
         
         outfile->cd();
         hists0bkgsub[i]->Write(Form("ScionixCal%d",i));
@@ -272,9 +273,10 @@ int main()
         for(int k=0; k<hists1[i]->FindBin(1); k++) hists1[i]->SetBinContent(k,0);
 
         double scale = (tofCutHigh1[i]-tofCutLow1[i])/(bkgCutHigh1[i]-bkgCutLow1[i]);
-        hists1bkg[i]->Scale(scale);
+        //hists1bkg[i]->Scale(scale);
+        hists1bkg[i]->Sumw2(); hists1[i]->Sumw2();
         hists1bkgsub[i] = (TH1F*)hists1[i]->Clone();
-        hists1bkgsub[i]->Add(hists1bkg[i],-1);
+        hists1bkgsub[i]->Add(hists1bkg[i],-1*scale);
 
         outfile->cd();
         hists1bkgsub[i]->Write(Form("ScionixCal%d",i+nFiles[0]));
@@ -332,9 +334,10 @@ int main()
     for(int k=0; k<hists2[0]->FindBin(1); k++) hists2[0]->SetBinContent(k,0);
     
     double scale = (tofCutHigh2-tofCutLow2)/(bkgCutHigh2-bkgCutLow2);
-    hists2bkg[0]->Scale(scale);
+    //hists2bkg[0]->Scale(scale);
+    hists2bkg[0]->Sumw2(); hists2[0]->Sumw2();
     hists2bkgsub[0] = (TH1F*)hists2[0]->Clone();
-    hists2bkgsub[0]->Add(hists2bkg[0],-1);    
+    hists2bkgsub[0]->Add(hists2bkg[0],-1*scale);    
 
     outfile->cd();
     hists2bkgsub[0]->Write(Form("ScionixCal%d",nFiles[0]+nFiles[1]));
@@ -429,9 +432,10 @@ int main()
         for(int k=0; k<hists3[i]->FindBin(1); k++) hists3[i]->SetBinContent(k,0);
         
         double scale = (tofCutHigh3[i]-tofCutLow3[i])/(bkgCutHigh3[i]-bkgCutLow3[i]);
-        hists3bkg[i]->Scale(scale);
+        //hists3bkg[i]->Scale(scale);
+        hists3bkg[i]->Sumw2(); hists3[i]->Sumw2();
         hists3bkgsub[i] = (TH1F*)hists3[i]->Clone();
-        hists3bkgsub[i]->Add(hists3bkg[i],-1);    
+        hists3bkgsub[i]->Add(hists3bkg[i],-1*scale);    
         
         outfile->cd();
         hists3bkgsub[i]->Write(Form("ScionixCal%d",i+nFiles[0]+nFiles[1]+nFiles[2]));
