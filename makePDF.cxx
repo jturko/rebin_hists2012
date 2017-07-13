@@ -1,5 +1,10 @@
 
-void makePDF()
+#include "TFile.h"
+#include "TH1F.h"
+#include "TCanvas.h"
+
+//void makePDF()
+int main()
 {
     TFile * f = TFile::Open("BC537_bkgsub.root");    
 
@@ -73,5 +78,5 @@ void makePDF()
 
     
 
-
+    return 0;
 }

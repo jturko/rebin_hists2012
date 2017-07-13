@@ -9,6 +9,9 @@ rebinBC501A_bkgsub: rebinBC501A_bkgsub.cxx
 rebinBC537_bkgsub: rebinBC537_bkgsub.cxx
 	$(CXX) $(CXXFLAGS) $(ROOTCONFIG) -o $@ $^
 
+makePDF: makePDF.cxx
+	$(CXX) $(CXXFLAGS) $(ROOTCONFIG) -o $@ $^
+
 clean:
 	rm -r rebinBC501A_bkgsub rebinBC537_bkgsub 
 
