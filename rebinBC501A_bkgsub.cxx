@@ -135,9 +135,9 @@ int main()
             treeArray_cal0[i]->GetEntry(j);
             
             fillval = slp*double(val[1])+offset;
-            fillval = random.Gaus(fillval,hists0[i]->GetBinWidth(0)); 
+            fillval = random.Gaus(fillval,2*hists0[i]->GetBinWidth(0)); 
             
-            if(val[5]>tofCutLow0[i]+40 && val[5]<tofCutHigh0[i] && val[1]>10 && fillval<phCutHigh0[i]*1.19) hists0[i]->Fill(fillval);
+            if(val[5]>tofCutLow0[i]+10 && val[5]<tofCutHigh0[i] && val[1]>10 && fillval<phCutHigh0[i]*1.19) hists0[i]->Fill(fillval);
             if(val[5]>bkgCutLow0[i] && val[5]<bkgCutHigh0[i] && fillval<phCutHigh0[i]*1.19) hists0bkg[i]->Fill(fillval);
         }   
         for(int k=0; k<hists0[i]->FindBin(1); k++) hists0[i]->SetBinContent(k,0);
@@ -260,7 +260,7 @@ int main()
             treeArray_cal1[i]->GetEntry(j);
             
             fillval = slp*double(val[1])+offset;
-            fillval = random.Gaus(fillval,hists1[i]->GetBinWidth(0)); 
+            fillval = random.Gaus(fillval,2*hists1[i]->GetBinWidth(0)); 
             
             if(val[5]>tofCutLow1[i] && val[5]<tofCutHigh1[i] && val[1]>10 && fillval<phCutHigh1[i]*1.19) hists1[i]->Fill(fillval);
             if(val[5]>bkgCutLow1[i] && val[5]<bkgCutHigh1[i] && fillval<phCutHigh1[i]*1.19) hists1bkg[i]->Fill(fillval);
@@ -318,7 +318,7 @@ int main()
         treeArray_cal2[0]->GetEntry(j);
         
         fillval = slp*double(val[1])+offset;
-        fillval = random.Gaus(fillval,hists2[0]->GetBinWidth(0)); 
+        fillval = random.Gaus(fillval,2*hists2[0]->GetBinWidth(0)); 
         
         if(val[5]>tofCutLow2 && val[5]<tofCutHigh2 && val[1]>0 && fillval > phCutLow2 && fillval<phCutHigh2*1.19) hists2[0]->Fill(fillval);
         if(val[5]>bkgCutLow2 && val[5]<bkgCutHigh2 && fillval<phCutHigh2*1.19) hists2bkg[0]->Fill(fillval);
@@ -416,7 +416,7 @@ int main()
             treeArray_cal3[i]->GetEntry(j);
             
             fillval = slp*double(val[1])+offset;
-            fillval = random.Gaus(fillval,hists3[i]->GetBinWidth(0)); 
+            fillval = random.Gaus(fillval,2*hists3[i]->GetBinWidth(0)); 
             
             if(val[5]>tofCutLow3[i] && val[5]<tofCutHigh3[i] && val[1]>10 && fillval<phCutHigh3[i]*1.19) hists3[i]->Fill(fillval);
             if(val[5]>bkgCutLow3[i] && val[5]<bkgCutHigh3[i] && fillval<phCutHigh3[i]*1.19) hists3bkg[i]->Fill(fillval);

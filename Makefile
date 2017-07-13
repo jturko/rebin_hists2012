@@ -13,6 +13,6 @@ makePDF: makePDF.cxx
 	$(CXX) $(CXXFLAGS) $(ROOTCONFIG) -o $@ $^
 
 clean:
-	rm -r rebinBC501A_bkgsub rebinBC537_bkgsub 
+	rm -r rebinBC501A_bkgsub rebinBC537_bkgsub makePDF
 
-all: rebinBC501A_bkgsub rebinBC537_bkgsub 
+all: rebinBC501A_bkgsub rebinBC537_bkgsub makePDF
