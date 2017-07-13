@@ -128,22 +128,15 @@ int main()
         nEntries = treeArray_cal0[i]->GetEntries();
         treeArray_cal0[i]->SetBranchAddress("value",&val);
         
-        //hists0[i] = new TH1F(Form("hists0_%d",i),Form("hists0_%d",i),10000,0,10000);
-        //hists0[i] = new TH1F(Form("hists0_%d",i),Form("hists0_%d",i),50100,-10,5000);
         hists0[i] = new TH1F(Form("hists0_%d",i),Form("hists0_%d",i),100,phCutLow0[i]-10,phCutHigh0[i]*1.2);
         hists0bkg[i] = new TH1F(Form("hists0bkg_%d",i),Form("hists0bkg_%d",i),100,phCutLow0[i]-10,phCutHigh0[i]*1.2);
-        //hists0bkgsub[i] = new TH1F(Form("hists0bkgsub_%d",i),Form("hists0bkgsub_%d",i),100,phCutLow0[i]-10,phCutHigh0[i]*1.2);
         
         for(int j=0; j<nEntries; j++) {
             treeArray_cal0[i]->GetEntry(j);
             
-            //if(j<5) std::cout << "val[1] = " << val[1] << std::endl;
-            //if(j<5) std::cout << "value = " << value << std::endl;
-            
             fillval = slp*double(val[1])+offset;
             fillval = random.Gaus(fillval,hists0[i]->GetBinWidth(0)); 
             
-            //if(val[5]>tofCutLow0[i] && val[5]<tofCutHigh0[i] && val[1]>10) hists0[i]->Fill(fillval);
             if(val[5]>tofCutLow0[i]+40 && val[5]<tofCutHigh0[i] && val[1]>10 && fillval<phCutHigh0[i]*1.19) hists0[i]->Fill(fillval);
             if(val[5]>bkgCutLow0[i] && val[5]<bkgCutHigh0[i] && fillval<phCutHigh0[i]*1.19) hists0bkg[i]->Fill(fillval);
         }   
@@ -260,20 +253,15 @@ int main()
         nEntries = treeArray_cal1[i]->GetEntries();
         treeArray_cal1[i]->SetBranchAddress("value",&val);
         
-        //hists1[i] = new TH1F(Form("hists1_%d",i),Form("hists1_%d",i),20000,0,2000);
         hists1[i] = new TH1F(Form("hists1_%d",i),Form("hists1_%d",i),100,phCutLow1[i]-10,phCutHigh1[i]*1.2);
         hists1bkg[i] = new TH1F(Form("hists1bkg_%d",i),Form("hists1bkg_%d",i),100,phCutLow1[i]-10,phCutHigh1[i]*1.2);
         
         for(int j=0; j<nEntries; j++) {
             treeArray_cal1[i]->GetEntry(j);
             
-            //if(j<5) std::cout << "val[1] = " << val[1] << std::endl;
-            //if(j<5) std::cout << "value = " << value << std::endl;
-            
             fillval = slp*double(val[1])+offset;
             fillval = random.Gaus(fillval,hists1[i]->GetBinWidth(0)); 
             
-            //if(val[5]>tofCutLow0[i]+40 && val[5]<tofCutHigh0[i] && val[1]>10 && fillval<phCutHigh0[i]*1.19) hists0[i]->Fill(fillval);
             if(val[5]>tofCutLow1[i] && val[5]<tofCutHigh1[i] && val[1]>10 && fillval<phCutHigh1[i]*1.19) hists1[i]->Fill(fillval);
             if(val[5]>bkgCutLow1[i] && val[5]<bkgCutHigh1[i] && fillval<phCutHigh1[i]*1.19) hists1bkg[i]->Fill(fillval);
         }   
@@ -329,13 +317,9 @@ int main()
     for(int j=0; j<nEntries; j++) {
         treeArray_cal2[0]->GetEntry(j);
         
-        //if(j<5) std::cout << "val[1] = " << val[1] << std::endl;
-        //if(j<5) std::cout << "value = " << value << std::endl;
-        
         fillval = slp*double(val[1])+offset;
         fillval = random.Gaus(fillval,hists2[0]->GetBinWidth(0)); 
         
-        //if(val[5]>tofCutLow0[i]+40 && val[5]<tofCutHigh0[i] && val[1]>10 && fillval<phCutHigh0[i]*1.19) hists0[i]->Fill(fillval);
         if(val[5]>tofCutLow2 && val[5]<tofCutHigh2 && val[1]>0 && fillval > phCutLow2 && fillval<phCutHigh2*1.19) hists2[0]->Fill(fillval);
         if(val[5]>bkgCutLow2 && val[5]<bkgCutHigh2 && fillval<phCutHigh2*1.19) hists2bkg[0]->Fill(fillval);
     }   
@@ -415,7 +399,6 @@ int main()
 
     std::cout << " slp3 = " << slp << " offset3 = " << offset << std::endl;    
 
-    //for(int i=0; i<=nFiles[3]; i++) {
     for(int i=0; i<nFiles[3]; i++) {
         path = "~/data/testcan_neutron_raw/" + treeFiles3[i] + ".root";
         tmpFile = TFile::Open(path.c_str());
@@ -428,20 +411,15 @@ int main()
         
         hists3[i] = new TH1F(Form("hists3_%d",i),Form("hists3_%d",i),100,phCutLow3[i]-10,phCutHigh3[i]*1.2);
         hists3bkg[i] = new TH1F(Form("hists3bkg_%d",i),Form("hists3bkg_%d",i),100,phCutLow3[i]-10,phCutHigh3[i]*1.2);
-        //hists3[i] = new TH1F(Form("hists3_%d",i),Form("hists3_%d",i),5000,0,5000);
         
         for(int j=0; j<nEntries; j++) {
             treeArray_cal3[i]->GetEntry(j);
-            
-            //if(j<5) std::cout << "val[1] = " << val[1] << std::endl;
-            //if(j<5) std::cout << "value = " << value << std::endl;
             
             fillval = slp*double(val[1])+offset;
             fillval = random.Gaus(fillval,hists3[i]->GetBinWidth(0)); 
             
             if(val[5]>tofCutLow3[i] && val[5]<tofCutHigh3[i] && val[1]>10 && fillval<phCutHigh3[i]*1.19) hists3[i]->Fill(fillval);
             if(val[5]>bkgCutLow3[i] && val[5]<bkgCutHigh3[i] && fillval<phCutHigh3[i]*1.19) hists3bkg[i]->Fill(fillval);
-            //if(val[5]>tofCutLow3[i] && val[5]<tofCutHigh3[i] && val[1]>10) hists3[i]->Fill(fillval);
         }   
         for(int k=0; k<hists3[i]->FindBin(1); k++) hists3[i]->SetBinContent(k,0);
         
@@ -470,13 +448,6 @@ int main()
 
     for(int i=0; i<nFiles[3]; i++) { delete hists3[i]; delete hists3bkg[i]; delete hists3bkgsub[i]; delete treeArray_cal3[i]; hists3[i] = hists3bkg[i] = hists3bkgsub[i] = NULL; treeArray_cal3[i] = NULL;}
     delete[] hists3; delete[] hists3bkg; delete[] hists3bkgsub; delete[] treeArray_cal3; hists3 = hists3bkg = hists3bkgsub = NULL; treeArray_cal3 = NULL;
-
-    //outfile->Close();
-    
-
-    //return treeArray_cal0;
-    //return calArrayD;    
-    //return hists3;
 
     return 0;
 
