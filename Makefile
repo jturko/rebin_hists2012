@@ -1,18 +1,18 @@
 
 CXX = g++
-CXXFLAGS = -Wall -fPIC
-ROOTCONFIG=`root-config --cflags --glibs`
+CXXFLAGS = -Wall -fPIC 
+ROOTCONFIG=`root-config --cflags --glibs --libs` 
 
 rebinBC501A_bkgsub: rebinBC501A_bkgsub.cxx
-	$(CXX) $(CXXFLAGS) $(ROOTCONFIG) -o $@ $^
+	$(CXX) $^ -o $@ $(CXXFLAGS) $(ROOTCONFIG) 
 
 rebinBC537_bkgsub: rebinBC537_bkgsub.cxx
-	$(CXX) $(CXXFLAGS) $(ROOTCONFIG) -o $@ $^
+	$(CXX) $^ -o $@ $(CXXFLAGS) $(ROOTCONFIG)
 
 makePDF: makePDF.cxx
-	$(CXX) $(CXXFLAGS) $(ROOTCONFIG) -o $@ $^
+	$(CXX) $^ -o $@ $(CXXFLAGS) $(ROOTCONFIG)  
 
 clean:
-	rm -r rebinBC501A_bkgsub rebinBC537_bkgsub makePDF
+	rm -f rebinBC501A_bkgsub rebinBC537_bkgsub makePDF
 
 all: rebinBC501A_bkgsub rebinBC537_bkgsub makePDF
