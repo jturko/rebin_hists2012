@@ -23,7 +23,10 @@ int main()
         ph->SetLineColor(kBlack);
         bkg->SetLineColor(kBlue);
         sub->SetLineColor(kRed);
-        
+
+        ph->SetStats(0); 
+        ph->SetTitle(Form("Run %d",i));        
+       
         ph->Draw("h");
         bkg->Draw("same h");
         sub->Draw("same h");    
@@ -55,6 +58,9 @@ int main()
         bkg->SetLineColor(kBlue);
         sub->SetLineColor(kRed);
         
+        ph->SetStats(0); 
+        ph->SetTitle(Form("Run %d",i));        
+
         ph->Draw("h");
         bkg->Draw("same h");
         sub->Draw("same h");    
