@@ -105,6 +105,7 @@ int main()
     TH1F ** hists0 = (TH1F**)malloc(nFiles[0]*sizeof(TH1F*));
     TH1F ** hists0bkg = (TH1F**)malloc(nFiles[0]*sizeof(TH1F*));
     TH1F ** hists0bkgsub = (TH1F**)malloc(nFiles[0]*sizeof(TH1F*));
+    TH1F ** nocuts0 = (TH1F**)malloc(nFiles[0]*sizeof(TH1F*));
     int nEntries;
     int val[6];
     double slp, offset;
@@ -130,6 +131,7 @@ int main()
         
         hists0[i] = new TH1F(Form("hists0_%d",i),Form("hists0_%d",i),100,phCutLow0[i]-10,phCutHigh0[i]*1.2);
         hists0bkg[i] = new TH1F(Form("hists0bkg_%d",i),Form("hists0bkg_%d",i),100,phCutLow0[i]-10,phCutHigh0[i]*1.2);
+        nocuts0[i] = new TH1F(Form("nocuts0_%d",i),Form("nocuts0_%d",i),100,phCutLow0[i]-10,phCutHigh0[i]*1.2);
         
         for(int j=0; j<nEntries; j++) {
             treeArray_cal0[i]->GetEntry(j);
@@ -139,11 +141,12 @@ int main()
             
             if(val[5]>tofCutLow0[i]+10 && val[5]<tofCutHigh0[i] && val[1]>10 && fillval<phCutHigh0[i]*1.19) hists0[i]->Fill(fillval);
             if(val[5]>bkgCutLow0[i] && val[5]<bkgCutHigh0[i] && fillval<phCutHigh0[i]*1.19) hists0bkg[i]->Fill(fillval);
+            nocuts0[i]->Fill(fillval);
         }   
         for(int k=0; k<hists0[i]->FindBin(1); k++) hists0[i]->SetBinContent(k,0);
         
         double scale = (tofCutHigh0[i]-tofCutLow0[i])/(bkgCutHigh0[i]-bkgCutLow0[i]);
-        hists0bkg[i]->Sumw2(); hists0[i]->Sumw2();
+        hists0bkg[i]->Sumw2(); hists0[i]->Sumw2(); nocuts0[i]->Sumw2();
         hists0bkgsub[i] = (TH1F*)hists0[i]->Clone();
         hists0bkgsub[i]->Add(hists0bkg[i],-1.0*scale);
         
@@ -153,6 +156,7 @@ int main()
         hists0bkgsub[i]->Write(Form("ProtonCal%d",i));
         hists0[i]->Write(Form("ProtonCal_wbkg%d",i));
         hists0bkg[i]->Write(Form("BkgCal%d",i));
+        nocuts0[i]->Write(Form("NoCutsCal%d",i));
         std::cout << " \t written to ProtonCal" << i << " and BkgCal" << i << std::endl;
     }    
 
@@ -237,6 +241,7 @@ int main()
     TH1F ** hists1 = (TH1F**)malloc(nFiles[1]*sizeof(TH1F*));
     TH1F ** hists1bkg = (TH1F**)malloc(nFiles[1]*sizeof(TH1F*));
     TH1F ** hists1bkgsub = (TH1F**)malloc(nFiles[1]*sizeof(TH1F*));    
+    TH1F ** nocuts1 = (TH1F**)malloc(nFiles[1]*sizeof(TH1F*));    
 
     slp = calArrayP[1]->GetParameter(0);
     offset = -1*slp*calArrayP[1]->GetParameter(1);        
@@ -255,6 +260,7 @@ int main()
         
         hists1[i] = new TH1F(Form("hists1_%d",i),Form("hists1_%d",i),100,phCutLow1[i]-10,phCutHigh1[i]*1.2);
         hists1bkg[i] = new TH1F(Form("hists1bkg_%d",i),Form("hists1bkg_%d",i),100,phCutLow1[i]-10,phCutHigh1[i]*1.2);
+        nocuts1[i] = new TH1F(Form("nocuts1_%d",i),Form("nocuts1_%d",i),100,phCutLow1[i]-10,phCutHigh1[i]*1.2);
         
         for(int j=0; j<nEntries; j++) {
             treeArray_cal1[i]->GetEntry(j);
@@ -264,11 +270,12 @@ int main()
             
             if(val[5]>tofCutLow1[i] && val[5]<tofCutHigh1[i] && val[1]>10 && fillval<phCutHigh1[i]*1.19) hists1[i]->Fill(fillval);
             if(val[5]>bkgCutLow1[i] && val[5]<bkgCutHigh1[i] && fillval<phCutHigh1[i]*1.19) hists1bkg[i]->Fill(fillval);
+            nocuts1[i]->Fill(fillval);
         }   
         for(int k=0; k<hists1[i]->FindBin(1); k++) hists1[i]->SetBinContent(k,0);
 
         double scale = (tofCutHigh1[i]-tofCutLow1[i])/(bkgCutHigh1[i]-bkgCutLow1[i]);
-        hists1bkg[i]->Sumw2(); hists1[i]->Sumw2();
+        hists1bkg[i]->Sumw2(); hists1[i]->Sumw2(); nocuts1[i]->Sumw2();
         hists1bkgsub[i] = (TH1F*)hists1[i]->Clone();
         hists1bkgsub[i]->Add(hists1bkg[i],-1*scale);
         
@@ -278,6 +285,7 @@ int main()
         hists1bkgsub[i]->Write(Form("ProtonCal%d",i+nFiles[0]));
         hists1[i]->Write(Form("ProtonCal_wbkg%d",i+nFiles[0]));
         hists1bkg[i]->Write(Form("BkgCal%d",i+nFiles[0]));
+        nocuts1[i]->Write(Form("NoCutsCal%d",i+nFiles[0]));
         std::cout << " \t written to ProtonCal" << i+nFiles[0] << " and BkgCal" << i+nFiles[0] << std::endl;
     }    
     
@@ -296,6 +304,7 @@ int main()
     TH1F ** hists2 = (TH1F**)malloc(nFiles[2]*sizeof(TH1F*));
     TH1F ** hists2bkg = (TH1F**)malloc(nFiles[2]*sizeof(TH1F*));
     TH1F ** hists2bkgsub = (TH1F**)malloc(nFiles[2]*sizeof(TH1F*));
+    TH1F ** nocuts2 = (TH1F**)malloc(nFiles[2]*sizeof(TH1F*));
     
     slp = calArrayP[2]->GetParameter(0);
     offset = -1*slp*calArrayP[2]->GetParameter(1);        
@@ -313,6 +322,7 @@ int main()
     
     hists2[0] = new TH1F(Form("hists2_%d",0),Form("hists2_%d",0),100,phCutLow2-10,phCutHigh2*1.2);
     hists2bkg[0] = new TH1F(Form("hists2bkg_%d",0),Form("hists2bkg_%d",0),100,phCutLow2-10,phCutHigh2*1.2);
+    nocuts2[0] = new TH1F(Form("nocuts2_%d",0),Form("nocuts2_%d",0),100,phCutLow2-10,phCutHigh2*1.2);
     
     for(int j=0; j<nEntries; j++) {
         treeArray_cal2[0]->GetEntry(j);
@@ -322,11 +332,12 @@ int main()
         
         if(val[5]>tofCutLow2 && val[5]<tofCutHigh2 && val[1]>0 && fillval > phCutLow2 && fillval<phCutHigh2*1.19) hists2[0]->Fill(fillval);
         if(val[5]>bkgCutLow2 && val[5]<bkgCutHigh2 && fillval<phCutHigh2*1.19) hists2bkg[0]->Fill(fillval);
+        nocuts2[0]->Fill(fillval);
     }   
     for(int k=0; k<hists2[0]->FindBin(1); k++) hists2[0]->SetBinContent(k,0);
     
     double scale = (tofCutHigh2-tofCutLow2)/(bkgCutHigh2-bkgCutLow2);
-    hists2bkg[0]->Sumw2(); hists2[0]->Sumw2();
+    hists2bkg[0]->Sumw2(); hists2[0]->Sumw2(); nocuts2[0]->Sumw2();
     hists2bkgsub[0] = (TH1F*)hists2[0]->Clone();
     hists2bkgsub[0]->Add(hists2bkg[0],-1*scale);    
     
@@ -336,6 +347,7 @@ int main()
     hists2bkgsub[0]->Write(Form("ProtonCal%d",nFiles[0]+nFiles[1]));
     hists2[0]->Write(Form("ProtonCal_wbkg%d",nFiles[0]+nFiles[1]));
     hists2bkg[0]->Write(Form("BkgCal%d",nFiles[0]+nFiles[1]));
+    nocuts2[0]->Write(Form("NoCutsCal%d",nFiles[0]+nFiles[1]));
     std::cout << " \t written to ProtonCal" << nFiles[0]+nFiles[1] << " and BkgCal" << nFiles[0]+nFiles[1] << std::endl;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -393,6 +405,7 @@ int main()
     TH1F ** hists3 = (TH1F**)malloc(nFiles[3]*sizeof(TH1F*));
     TH1F ** hists3bkg = (TH1F**)malloc(nFiles[3]*sizeof(TH1F*));
     TH1F ** hists3bkgsub = (TH1F**)malloc(nFiles[3]*sizeof(TH1F*));
+    TH1F ** nocuts3 = (TH1F**)malloc(nFiles[3]*sizeof(TH1F*));
     
     slp = calArrayP[3]->GetParameter(0);
     offset = -1*slp*calArrayP[3]->GetParameter(1);        
@@ -411,6 +424,7 @@ int main()
         
         hists3[i] = new TH1F(Form("hists3_%d",i),Form("hists3_%d",i),100,phCutLow3[i]-10,phCutHigh3[i]*1.2);
         hists3bkg[i] = new TH1F(Form("hists3bkg_%d",i),Form("hists3bkg_%d",i),100,phCutLow3[i]-10,phCutHigh3[i]*1.2);
+        nocuts3[i] = new TH1F(Form("nocuts3_%d",i),Form("nocuts3_%d",i),100,phCutLow3[i]-10,phCutHigh3[i]*1.2);
         
         for(int j=0; j<nEntries; j++) {
             treeArray_cal3[i]->GetEntry(j);
@@ -420,11 +434,12 @@ int main()
             
             if(val[5]>tofCutLow3[i] && val[5]<tofCutHigh3[i] && val[1]>10 && fillval<phCutHigh3[i]*1.19) hists3[i]->Fill(fillval);
             if(val[5]>bkgCutLow3[i] && val[5]<bkgCutHigh3[i] && fillval<phCutHigh3[i]*1.19) hists3bkg[i]->Fill(fillval);
+            nocuts3[i]->Fill(fillval);
         }   
         for(int k=0; k<hists3[i]->FindBin(1); k++) hists3[i]->SetBinContent(k,0);
         
         double scale = (tofCutHigh3[i]-tofCutLow3[i])/(bkgCutHigh3[i]-bkgCutLow3[i]);
-        hists3bkg[i]->Sumw2(); hists3[i]->Sumw2();
+        hists3bkg[i]->Sumw2(); hists3[i]->Sumw2(); nocuts3[i]->Sumw2();
         hists3bkgsub[i] = (TH1F*)hists3[i]->Clone();
         hists3bkgsub[i]->Add(hists3bkg[i],-1*scale);    
         
@@ -434,6 +449,7 @@ int main()
         hists3bkgsub[i]->Write(Form("ProtonCal%d",i+nFiles[0]+nFiles[1]+nFiles[2]));
         hists3[i]->Write(Form("ProtonCal_wbkg%d",i+nFiles[0]+nFiles[1]+nFiles[2]));
         hists3bkg[i]->Write(Form("BkgCal%d",i+nFiles[0]+nFiles[1]+nFiles[2]));
+        nocuts3[i]->Write(Form("NoCutsCal%d",i+nFiles[0]+nFiles[1]+nFiles[2]));
         std::cout << " \t written to ProtonCal" << nFiles[0]+nFiles[1]+nFiles[2]+i << " and BkgCal" << nFiles[0]+nFiles[1]+nFiles[2]+i << std::endl;
     }    
 
