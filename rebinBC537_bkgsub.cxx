@@ -127,9 +127,9 @@ int main()
         
         //hists0[i] = new TH1F(Form("hists0_%d",i),Form("hists0_%d",i),10000,0,10000);
         //hists0[i] = new TH1F(Form("hists0_%d",i),Form("hists0_%d",i),50100,-10,5000);
-        hists0[i] = new TH1F(Form("hists0_%d",i),Form("hists0_%d",i),100,phCutLow0[i]-10,phCutHigh0[i]*1.2);
-        hists0bkg[i] = new TH1F(Form("hists0bkg_%d",i),Form("hists0bkg_%d",i),100,phCutLow0[i]-10,phCutHigh0[i]*1.2);
-        nocuts0[i] = new TH1F(Form("nocuts0_%d",i),Form("nocuts0_%d",i),100,phCutLow0[i]-10,phCutHigh0[i]*1.2);
+        hists0[i] = new TH1F(Form("hists0_%d",i),Form("hists0_%d",i),100,phCutLow0[i]-2,phCutHigh0[i]*1.1);
+        hists0bkg[i] = new TH1F(Form("hists0bkg_%d",i),Form("hists0bkg_%d",i),100,phCutLow0[i]-2,phCutHigh0[i]*1.1);
+        nocuts0[i] = new TH1F(Form("nocuts0_%d",i),Form("nocuts0_%d",i),100,phCutLow0[i]-2,phCutHigh0[i]*1.1);
         //hists0bkgsub[i] = new TH1F(Form("hists0bkgsub_%d",i),Form("hists0bkgsub_%d",i),100,phCutLow0[i]-10,phCutHigh0[i]*1.2);
         
         for(int j=0; j<nEntries; j++) {
@@ -261,9 +261,9 @@ int main()
         treeArray_cal1[i]->SetBranchAddress("value",&val);
         
         //hists1[i] = new TH1F(Form("hists1_%d",i),Form("hists1_%d",i),20000,0,2000);
-        hists1[i] = new TH1F(Form("hists1_%d",i),Form("hists1_%d",i),100,phCutLow1[i]-10,phCutHigh1[i]*1.2);
-        hists1bkg[i] = new TH1F(Form("hists1bkg_%d",i),Form("hists1bkg_%d",i),100,phCutLow1[i]-10,phCutHigh1[i]*1.2);
-        nocuts1[i] = new TH1F(Form("nocuts1_%d",i),Form("nocuts1_%d",i),100,phCutLow1[i]-10,phCutHigh1[i]*1.2);        
+        hists1[i] = new TH1F(Form("hists1_%d",i),Form("hists1_%d",i),100,phCutLow1[i]-2,phCutHigh1[i]*1.1);
+        hists1bkg[i] = new TH1F(Form("hists1bkg_%d",i),Form("hists1bkg_%d",i),100,phCutLow1[i]-2,phCutHigh1[i]*1.1);
+        nocuts1[i] = new TH1F(Form("nocuts1_%d",i),Form("nocuts1_%d",i),100,phCutLow1[i]-2,phCutHigh1[i]*1.1);        
 
         for(int j=0; j<nEntries; j++) {
             treeArray_cal1[i]->GetEntry(j);
@@ -302,7 +302,7 @@ int main()
     std::string treeFiles2 = "0.7MeV_145_3";
     double tofCutLow2 = 6020;
     double tofCutHigh2 = 9140;
-    double phCutLow2 = 3;
+    double phCutLow2 = 5;
     double phCutHigh2 = 22;
     double bkgCutLow2 = 11000;
     double bkgCutHigh2 = 16000;
@@ -328,9 +328,9 @@ int main()
     nEntries = treeArray_cal2[0]->GetEntries();
     treeArray_cal2[0]->SetBranchAddress("value",&val);
     
-    hists2[0] = new TH1F(Form("hists2_%d",0),Form("hists2_%d",0),100,phCutLow2-10,phCutHigh2*1.2);
-    hists2bkg[0] = new TH1F(Form("hists2bkg_%d",0),Form("hists2bkg_%d",0),100,phCutLow2-10,phCutHigh2*1.2);
-    nocuts2[0] = new TH1F(Form("nocuts2_%d",0),Form("nocuts2_%d",0),100,phCutLow2-10,phCutHigh2*1.2);
+    hists2[0] = new TH1F(Form("hists2_%d",0),Form("hists2_%d",0),100,phCutLow2-2,phCutHigh2*1.1);
+    hists2bkg[0] = new TH1F(Form("hists2bkg_%d",0),Form("hists2bkg_%d",0),100,phCutLow2-2,phCutHigh2*1.1);
+    nocuts2[0] = new TH1F(Form("nocuts2_%d",0),Form("nocuts2_%d",0),100,phCutLow2-2,phCutHigh2*1.1);
     
 
     for(int j=0; j<nEntries; j++) {
@@ -431,9 +431,9 @@ int main()
         nEntries = treeArray_cal3[i]->GetEntries();
         treeArray_cal3[i]->SetBranchAddress("value",&val);
         
-        hists3[i] = new TH1F(Form("hists3_%d",i),Form("hists3_%d",i),100,phCutLow3[i]-10,phCutHigh3[i]*1.2);
-        hists3bkg[i] = new TH1F(Form("hists3bkg_%d",i),Form("hists3bkg_%d",i),100,phCutLow3[i]-10,phCutHigh3[i]*1.2);
-        nocuts3[i] = new TH1F(Form("nocuts3_%d",i),Form("nocuts3_%d",i),100,phCutLow3[i]-10,phCutHigh3[i]*1.2);
+        hists3[i] = new TH1F(Form("hists3_%d",i),Form("hists3_%d",i),100,phCutLow3[i]-2,phCutHigh3[i]*1.1);
+        hists3bkg[i] = new TH1F(Form("hists3bkg_%d",i),Form("hists3bkg_%d",i),100,phCutLow3[i]-2,phCutHigh3[i]*1.1);
+        nocuts3[i] = new TH1F(Form("nocuts3_%d",i),Form("nocuts3_%d",i),100,phCutLow3[i]-2,phCutHigh3[i]*1.1);
         //hists3[i] = new TH1F(Form("hists3_%d",i),Form("hists3_%d",i),5000,0,5000);
         
         for(int j=0; j<nEntries; j++) {
